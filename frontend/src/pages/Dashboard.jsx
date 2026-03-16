@@ -24,9 +24,7 @@ export default function Dashboard({ adminKey }) {
   const total = youth.length;
   const checkedIn = youth.filter((y) => y.checkedIn).length;
   const notChecked = total - checkedIn;
-
   const progress = total === 0 ? 0 : Math.round((checkedIn / total) * 100);
-
   const filteredYouth = youth.filter((y) =>
     y.fullName?.toLowerCase().includes(search.toLowerCase())
   );
@@ -34,46 +32,37 @@ export default function Dashboard({ adminKey }) {
   return (
     <div className="dashboard">
 
-      <h1>Youth Convention Dashboard</h1>
+      {/* HEADER */}
+      <header style={{ textAlign: "center", marginBottom: "30px" }}>
+        <h1>Church Event Management System</h1>
+      </header>
 
       {/* STATISTICS CARDS */}
-
       <div className="stats">
-
         <div className="card blue">
           <h3>Total Registered</h3>
           <p>{total}</p>
         </div>
-
         <div className="card green">
           <h3>Checked In</h3>
           <p>{checkedIn}</p>
         </div>
-
         <div className="card orange">
           <h3>Not Checked</h3>
           <p>{notChecked}</p>
         </div>
-
       </div>
 
       {/* ATTENDANCE PROGRESS */}
-
       <div className="progress-box">
         <h3>Attendance Progress</h3>
-
         <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: `${progress}%` }}
-          ></div>
+          <div className="progress-fill" style={{ width: `${progress}%` }}></div>
         </div>
-
         <p>{progress}% Checked In</p>
       </div>
 
       {/* SEARCH */}
-
       <div className="search-box">
         <input
           placeholder="Search youth by name..."
@@ -83,11 +72,8 @@ export default function Dashboard({ adminKey }) {
       </div>
 
       {/* RECENT / FILTERED LIST */}
-
       <div className="recent">
-
         <h2>Youth List</h2>
-
         {filteredYouth.slice(0, 10).map((y) => (
           <div key={y._id} className="recent-item">
             <strong>{y.fullName}</strong>
@@ -98,8 +84,19 @@ export default function Dashboard({ adminKey }) {
             </span>
           </div>
         ))}
-
       </div>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          marginTop: "50px",
+          textAlign: "center",
+          color: "#7f8c8d",
+          fontSize: "12px",
+        }}
+      >
+        Developed by Pianist Charles Wambua | Contact: 0745939344
+      </footer>
 
     </div>
   );
