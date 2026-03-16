@@ -4,48 +4,59 @@ import api from "../api";
 export default function YouthList() {
   const [youth, setYouth] = useState([]);
   const [searchPhone, setSearchPhone] = useState("");
+  const [adminKey, setAdminKey] = useState("");
 
-  const token = localStorage.getItem("token");
+  // Prompt for admin key if not already stored
+  useEffect(() => {
+    let key = localStorage.getItem("adminKey");
+    if (!key) {
+      key = prompt("Enter admin secret key:");
+      if (!key) {
+        alert("Admin key required to access this page");
+        return;
+      }
+      localStorage.setItem("adminKey", key);
+    }
+    setAdminKey(key);
+    fetchYouth(key);
+  }, []);
 
   // Fetch youth list
-  const fetchYouth = async () => {
+  const fetchYouth = async (key) => {
     try {
       const res = await api.get("/", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "x-admin-key": key || adminKey },
       });
       setYouth(res.data);
     } catch (err) {
       console.error(err.response?.data || err.message);
+      alert("Admin access required or invalid key");
     }
   };
-
-  useEffect(() => {
-    fetchYouth();
-  }, []);
 
   // Check-in youth
   const checkIn = async (id) => {
     try {
       await api.patch(`/${id}/checkin`, null, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "x-admin-key": adminKey },
       });
       fetchYouth();
       alert("Checked in successfully");
-    } catch (err) {
+    } catch {
       alert("Check-in failed");
     }
   };
 
   // Delete youth
   const deleteYouth = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this youth?")) return;
+    if (!window.confirm("Delete this youth?")) return;
     try {
       await api.delete(`/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "x-admin-key": adminKey },
       });
       fetchYouth();
-      alert("Youth deleted successfully");
-    } catch (err) {
+      alert("Deleted successfully");
+    } catch {
       alert("Delete failed");
     }
   };
@@ -55,17 +66,17 @@ export default function YouthList() {
     if (!searchPhone) return fetchYouth();
     try {
       const res = await api.get(`/search/${searchPhone}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "x-admin-key": adminKey },
       });
       setYouth(res.data);
-    } catch (err) {
+    } catch {
       alert("Search failed");
     }
   };
 
   return (
     <div>
-      <h2>Youth List</h2>
+      <h2>Youth List (Admin)</h2>
 
       <div style={{ marginBottom: "15px" }}>
         <input
