@@ -1,9 +1,9 @@
 // frontend/src/api.js
 import axios from "axios";
 
-// Point baseURL to youth routes
+// Point baseURL to deployed backend's youth routes
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL + "/youth", // e.g., http://localhost:5000/api/youth
+  baseURL: "https://youth-convention-system.onrender.com/api/youth",
 });
 
 // Automatically attach admin key if it exists in localStorage
@@ -25,7 +25,7 @@ api.interceptors.response.use(
     if (error.response?.status === 403) {
       console.warn("Admin key invalid or missing");
       localStorage.removeItem("adminKey"); // remove invalid key
-      alert("Admin key invalid. Please refresh and enter correct key.");
+      alert("Admin key invalid. Please refresh and enter the correct key.");
     }
     return Promise.reject(error);
   }
