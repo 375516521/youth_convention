@@ -1,23 +1,18 @@
-// controllers/youthController.js
 import Youth from "../models/Youth.js";
 import jwt from "jsonwebtoken";
 
-// -----------------------------
 // Create youth (registration) ✅ generates JWT
-// -----------------------------
 export const createYouth = async (req, res) => {
   try {
-    // 1️⃣ Create new youth in DB
     const youth = await Youth.create(req.body);
 
-    // 2️⃣ Generate JWT token for frontend
+    // Generate token
     const token = jwt.sign(
-      { id: youth._id, fullName: youth.fullName }, // use the correct field from your model
+      { id: youth._id, fullName: youth.fullName },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" } // token valid for 1 hour
+      { expiresIn: "1h" }
     );
 
-    // 3️⃣ Send both youth data and token to frontend
     res.status(201).json({ youth, token });
   } catch (error) {
     console.error("Registration error:", error.message);
@@ -25,9 +20,7 @@ export const createYouth = async (req, res) => {
   }
 };
 
-// -----------------------------
-// Get all youth (protected route)
-// -----------------------------
+// Get all youth (protected)
 export const getAllYouth = async (req, res) => {
   try {
     const youth = await Youth.find().sort({ createdAt: -1 });
@@ -38,9 +31,7 @@ export const getAllYouth = async (req, res) => {
   }
 };
 
-// -----------------------------
-// Check-in youth (protected route)
-// -----------------------------
+// Check-in youth (protected)
 export const checkInYouth = async (req, res) => {
   try {
     const youth = await Youth.findByIdAndUpdate(
