@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api"; // <-- go up one folder
 
 export default function Dashboard() {
   const [youth, setYouth] = useState([]);
 
+  const fetchYouth = async () => {
+    try {
+      const res = await api.get("/"); // protected route
+      setYouth(res.data);
+    } catch (err) {
+      console.error("Error fetching youth:", err.response?.data || err.message);
+    }
+  };
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/youth")
-      .then(res => setYouth(res.data));
+    fetchYouth();
   }, []);
 
   const total = youth.length;

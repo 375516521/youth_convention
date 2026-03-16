@@ -1,17 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const {
-  createYouth,
-  getAllYouth,
-  checkInYouth
-} = require("../controllers/youthController");
+// routes/youthRoutes.js
+import { Router } from "express";
+import { createYouth, getAllYouth, checkInYouth } from "../controllers/youthController.js";
+import auth from "../middleware/auth.js";
 
+const router = Router();
+
+// Registration route (no auth) ✅
 router.post("/", createYouth);
-router.get("/", getAllYouth);
-router.patch("/:id/checkin", checkInYouth);
 
-const auth = require("../middleware/auth");
-router.post("/", auth, createYouth);
+// Protected routes ✅
 router.get("/", auth, getAllYouth);
+router.patch("/:id/checkin", auth, checkInYouth);
 
-module.exports = router;
+export default router;

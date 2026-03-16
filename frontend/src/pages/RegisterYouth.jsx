@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api";
 
 export default function RegisterYouth() {
   const [form, setForm] = useState({});
@@ -8,13 +8,22 @@ export default function RegisterYouth() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const submit = async () => {
-    await axios.post("http://localhost:5000/api/youth", form);
-    alert("Registered successfully");
+    try {
+      const res = await api.post("/", form); // no token sent
+      localStorage.setItem("token", res.data.token); // save token returned
+      alert("Registered successfully");
+      // Optional: redirect to Youth List or Dashboard
+      // window.location.href = "/dashboard";
+    } catch (error) {
+      console.error("Registration error:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Registration failed");
+    }
   };
 
   return (
     <div>
-      <h2>Register Youth</h2>
+      <h2>Registration Form</h2>
+      <h2>Youth convention-Nakuru</h2>
       <input name="fullName" placeholder="Full Name" onChange={handleChange} />
       <input name="congregation" placeholder="Congregation" onChange={handleChange} />
       <input name="talent" placeholder="Talent" onChange={handleChange} />
