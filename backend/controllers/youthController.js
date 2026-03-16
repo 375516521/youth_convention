@@ -1,37 +1,33 @@
 import Youth from "../models/Youth.js";
 import jwt from "jsonwebtoken";
 
-// Create youth (registration) ✅ generates JWT
+// Registration (unprotected)
 export const createYouth = async (req, res) => {
   try {
     const youth = await Youth.create(req.body);
-
-    // Generate token
     const token = jwt.sign(
       { id: youth._id, fullName: youth.fullName },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-
     res.status(201).json({ youth, token });
-  } catch (error) {
-    console.error("Registration error:", error.message);
-    res.status(400).json({ message: error.message });
+  } catch (err) {
+    console.error("Youth registration error:", err);
+    res.status(400).json({ message: err.message });
   }
 };
 
-// Get all youth (protected)
+// Get all youth
 export const getAllYouth = async (req, res) => {
   try {
     const youth = await Youth.find().sort({ createdAt: -1 });
     res.json(youth);
-  } catch (error) {
-    console.error("Error fetching youth:", error.message);
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-// Check-in youth (protected)
+// Check-in youth
 export const checkInYouth = async (req, res) => {
   try {
     const youth = await Youth.findByIdAndUpdate(
@@ -40,8 +36,27 @@ export const checkInYouth = async (req, res) => {
       { new: true }
     );
     res.json(youth);
-  } catch (error) {
-    console.error("Error checking in youth:", error.message);
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Delete youth
+export const deleteYouth = async (req, res) => {
+  try {
+    await Youth.findByIdAndDelete(req.params.id);
+    res.json({ message: "Youth deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Search youth by phone
+export const searchYouthByPhone = async (req, res) => {
+  try {
+    const youth = await Youth.find({ phone: req.params.phone });
+    res.json(youth);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

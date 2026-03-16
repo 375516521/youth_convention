@@ -1,14 +1,19 @@
 import { Router } from "express";
-import { createYouth, getAllYouth, checkInYouth } from "../controllers/youthController.js";
+import {
+  createYouth,
+  getAllYouth,
+  checkInYouth,
+  deleteYouth,
+  searchYouthByPhone,
+} from "../controllers/youthController.js";
 import auth from "../middleware/auth.js";
 
 const router = Router();
 
-// Registration route (no auth required)
-router.post("/", createYouth);
-
-// Protected routes
-router.get("/", auth, getAllYouth);
+router.post("/", createYouth);          // registration
+router.get("/", auth, getAllYouth);    // list all
+router.get("/search/:phone", auth, searchYouthByPhone); // search
 router.patch("/:id/checkin", auth, checkInYouth);
+router.delete("/:id", auth, deleteYouth);
 
 export default router;
