@@ -6,16 +6,12 @@ export default function YouthList() {
   const [searchPhone, setSearchPhone] = useState("");
   const [adminKey, setAdminKey] = useState("");
 
-  // Prompt for admin key if not already stored
+  // Always prompt on every refresh
   useEffect(() => {
-    let key = localStorage.getItem("adminKey");
+    const key = prompt("Enter admin secret key:");
     if (!key) {
-      key = prompt("Enter admin secret key:");
-      if (!key) {
-        alert("Admin key required to access this page");
-        return;
-      }
-      localStorage.setItem("adminKey", key);
+      alert("Admin key required to access this page");
+      return;
     }
     setAdminKey(key);
     fetchYouth(key);
@@ -25,7 +21,7 @@ export default function YouthList() {
   const fetchYouth = async (key) => {
     try {
       const res = await api.get("/", {
-        headers: { "x-admin-key": key || adminKey },
+        headers: { "x-admin-key": key },
       });
       setYouth(res.data);
     } catch (err) {
@@ -40,7 +36,7 @@ export default function YouthList() {
       await api.patch(`/${id}/checkin`, null, {
         headers: { "x-admin-key": adminKey },
       });
-      fetchYouth();
+      fetchYouth(adminKey);
       alert("Checked in successfully");
     } catch {
       alert("Check-in failed");
@@ -54,7 +50,7 @@ export default function YouthList() {
       await api.delete(`/${id}`, {
         headers: { "x-admin-key": adminKey },
       });
-      fetchYouth();
+      fetchYouth(adminKey);
       alert("Deleted successfully");
     } catch {
       alert("Delete failed");
@@ -63,7 +59,7 @@ export default function YouthList() {
 
   // Search by phone
   const searchByPhone = async () => {
-    if (!searchPhone) return fetchYouth();
+    if (!searchPhone) return fetchYouth(adminKey);
     try {
       const res = await api.get(`/search/${searchPhone}`, {
         headers: { "x-admin-key": adminKey },
@@ -90,7 +86,7 @@ export default function YouthList() {
         <button
           onClick={() => {
             setSearchPhone("");
-            fetchYouth();
+            fetchYouth(adminKey);
           }}
           style={{ marginLeft: "5px" }}
         >

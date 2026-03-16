@@ -39,7 +39,7 @@ export default function RegisterYouth() {
       />
       <input
         name="congregation"
-        placeholder="Congregation"
+        placeholder="District - Congregation"
         value={form.congregation}
         onChange={handleChange}
       />
