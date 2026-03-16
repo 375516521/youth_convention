@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Point baseURL to deployed backend's youth routes
 const api = axios.create({
-  baseURL: "https://youth-convention-system.onrender.com/api/youth",
+  baseURL: "https://youth-convention-system.onrender.com",
 });
 
 // Automatically attach admin key if it exists in localStorage
