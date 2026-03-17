@@ -15,7 +15,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://youth-convention-nac.netlify.app", // remove trailing slash
+  origin: "*", // remove trailing slash
   credentials: true
 }));
 app.use(express.json());
