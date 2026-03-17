@@ -1,16 +1,4 @@
-// server.js
-import dotenv from "dotenv";
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
 
-// Import routes (note the .js extension)
-import authRoutes from "./routes/authRoutes.js";
-import youthRoutes from "./routes/youthRoutes.js";
-
-dotenv.config();
-
-const app = express();
 // server.js
 import dotenv from "dotenv";
 import express from "express";
