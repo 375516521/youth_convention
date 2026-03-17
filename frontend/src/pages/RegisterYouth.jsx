@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../api"; // ensure api.js has baseURL: "http://localhost:5000/api/youth"
+import api from "../api"; // 
 
 export default function RegisterYouth() {
   const [form, setForm] = useState({
@@ -16,7 +16,7 @@ export default function RegisterYouth() {
 
   const submit = async () => {
     try {
-      const res = await api.post("/", form); // POST to /api/youth
+      const res = await api.post("/youth", form); // POST to /api/youth
       if (res.data.token) localStorage.setItem("token", res.data.token);
       alert("Registered successfully");
       // Optionally redirect

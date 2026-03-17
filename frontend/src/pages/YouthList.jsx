@@ -27,7 +27,7 @@ export default function YouthList() {
 
   const fetchYouth = async (key) => {
     try {
-      const res = await api.get("/", {
+      const res = await api.get("/youth", {
         headers: { "x-admin-key": key },
       });
       setYouth(res.data);
