@@ -11,10 +11,23 @@ import youthRoutes from "./routes/youthRoutes.js";
 dotenv.config();
 
 const app = express();
+// server.js
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+
+// Import routes (note the .js extension)
+import authRoutes from "./routes/authRoutes.js";
+import youthRoutes from "./routes/youthRoutes.js";
+
+dotenv.config();
+
+const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://youth-convention-nac.netlify.app/",
+  origin: "https://youth-convention-nac.netlify.app", // remove trailing slash
   credentials: true
 }));
 app.use(express.json());
@@ -22,6 +35,11 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/youth", youthRoutes);
+
+// Root route / health check
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running!");
+});
 
 // Database
 mongoose.connect(process.env.MONGO_URI)
