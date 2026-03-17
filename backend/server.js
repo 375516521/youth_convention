@@ -14,7 +14,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "youth-convention.vercel.app",
+  origin: "https://incandescent-bonbon-896740.netlify.app/",
   credentials: true
 }));
 app.use(express.json());
