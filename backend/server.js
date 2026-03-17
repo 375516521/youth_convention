@@ -14,7 +14,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://incandescent-bonbon-896740.netlify.app/",
+  origin: "https://youth-convention-nac.netlify.app/",
   credentials: true
 }));
 app.use(express.json());
